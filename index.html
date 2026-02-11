@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>App Launch Countdown</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: "Segoe UI", Arial, sans-serif;
+    }
+
+    body {
+     margin: 0;
+     height: 100vh;
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     color: #fff;
+     overflow: hidden;
+
+     /* ✅ Your background image */
+     background: 
+    linear-gradient(rgba(153, 149, 149, 0.288), rgba(0,0,0,0.65)),
+    url('C:/Users/Lenovo/OneDrive - AGRIBUSINESS RURAL BANK INC/Desktop/PRIVATE FILES/Getting Started/agribankonline assets/agribankbg.png') no-repeat center center/cover;
+     }
+
+    /* 🔥 Animated background glow */
+    body::before {
+      content: "";
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(72, 224, 85, 0.4), transparent 70%);
+      top: -200px;
+      left: -200px;
+      animation: moveGlow 10s infinite alternate;
+      z-index: 0;
+    }
+
+    body::after {
+      content: "";
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(99,102,241,0.4), transparent 70%);
+      bottom: -200px;
+      right: -200px;
+      animation: moveGlow 12s infinite alternate;
+      z-index: 0;
+    }
+
+    @keyframes moveGlow {
+      0% { transform: translate(0,0); }
+      100% { transform: translate(150px,150px); }
+    }
+
+    /* Optional background image (uncomment if needed) */
+    /*
+    body {
+      background: url('assets/images/bg.jpg') no-repeat center center/cover;
+    }
+    */
+
+    .countdown-container {
+     text-align: center;
+     z-index: 1;
+     padding: 40px 60px;
+     border-radius: 25px;
+     background: rgba(255, 255, 255, 0);
+     backdrop-filter: blur(10px);
+     border: 1px solid rgba(255,255,255,0.2);
+     box-shadow: 0 25px 70px rgba(0,0,0,0.7);
+     }
+
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 40px;
+      letter-spacing: 2px;
+    }
+
+    .timer {
+      display: flex;
+      gap: 30px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .time-box {
+      width: 150px;
+      height: 150px;
+      background: linear-gradient(145deg, #06a33a, #3ae665);
+      border-radius: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+      box-shadow: 
+        0 25px 50px rgba(138, 135, 135, 0.144),
+        inset 0 -12px 25px rgba(0,0,0,0.5),
+        inset 0 12px 25px rgba(255,255,255,0.2);
+      transform: perspective(900px) rotateX(10deg);
+      transition: 0.3s ease;
+    }
+
+    .time-box:hover {
+      transform: perspective(900px) rotateX(0deg) scale(1.08);
+    }
+
+    .number {
+      font-size: 3.8rem;
+    }
+
+    .label {
+      font-size: 1rem;
+      margin-top: 8px;
+      letter-spacing: 1px;
+      opacity: 0.9;
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2rem;
+      }
+      .time-box {
+        width: 110px;
+        height: 110px;
+      }
+      .number {
+        font-size: 2.6rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="countdown-container">
+    <h1>Agribank Online Beta Expires</h1>
+    <div class="timer">
+      <div class="time-box">
+        <div class="number" id="days">0</div>
+        <div class="label">DAYS</div>
+      </div>
+      <div class="time-box">
+        <div class="number" id="hours">0</div>
+        <div class="label">HOURS</div>
+      </div>
+      <div class="time-box">
+        <div class="number" id="minutes">0</div>
+        <div class="label">MINUTES</div>
+      </div>
+      <div class="time-box">
+        <div class="number" id="seconds">0</div>
+        <div class="label">SECONDS</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 👉 Change launch date here
+    const launchDate = new Date("February 20, 2026 12:00:00").getTime();
+
+    const countdown = setInterval(() => {
+      const now = new Date().getTime();
+      const distance = launchDate - now;
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      document.getElementById("days").innerText = days;
+      document.getElementById("hours").innerText = hours;
+      document.getElementById("minutes").innerText = minutes;
+      document.getElementById("seconds").innerText = seconds;
+
+      if (distance < 0) {
+        clearInterval(countdown);
+        document.querySelector(".countdown-container").innerHTML = "<h1>🎉 Our App is Live!</h1>";
+      }
+    }, 1000);
+  </script>
+</body>
+</html>
