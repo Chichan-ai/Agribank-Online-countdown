@@ -94,12 +94,16 @@
       .number { font-size: 2.8rem; }
       .timer { gap: 15px; }
     }
+    .expiry-text {
+  color: #ff4d4d; /* A vibrant red that pops against the green/dark background */
+    }
   </style>
 </head>
 <body>
 
   <div class="countdown-container">
-    <h1>Agribank<br>Online Beta<br>Expires</h1>
+    <h1>Agribank<br>Online Beta<br><span class="expiry-text">Expires in...</span></h1>
+    <div class="timer">
     <div class="timer">
       <div class="time-box">
         <div id="days" class="number">8</div>
@@ -142,3 +146,4 @@
   </script>
 </body>
 </html>
+
