@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Agribank Countdown</title>
+  <title>Agribank Online Countdown</title>
   <style>
     * {
       box-sizing: border-box;
@@ -18,67 +18,79 @@
       align-items: center;
       color: #fff;
       overflow: hidden;
-      
-      /* 🟢 UPDATE YOUR IMAGE PATH HERE */
+      /* Your background image */
       background: url('agribankbg.png') no-repeat center center/cover;
     }
 
     .countdown-container {
       text-align: center;
       z-index: 1;
-      padding: 50px 25px;
-      border-radius: 50px;
-      /* Subtle glass effect to make text pop against your background */
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      width: 80%;
-      max-width: 410px; 
+      padding: 40px 20px;
+      width: 90%;
+      max-width: 400px; 
     }
 
     h1 {
-      font-size: 2.4rem;
-      margin-bottom: 40px;
-      line-height: 1.1;
+      font-size: 2.2rem;
+      margin-bottom: 35px;
+      line-height: 1.2;
       font-weight: 700;
-      letter-spacing: -0.5px;
+      text-shadow: 0 4px 10px rgba(0,0,0,0.3);
     }
 
-    /* 2x2 Grid Layout for Mobile */
     .timer {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 20px;
+      perspective: 1000px; /* Essential for 3D depth */
     }
 
     .time-box {
       aspect-ratio: 1 / 1;
-      background: linear-gradient(145deg, #4ade80, #22c55e);
-      border-radius: 28px;
+      background: linear-gradient(145deg, #88f0a5, #1b9b46); /* Adjusted green gradient */
+      border-radius: 25px;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+      
+      /* 3D Shadows */
+      box-shadow: 
+        /* Outer shadow for depth */
+        0 15px 30px rgba(0, 0, 0, 0.4), 
+        /* Top inner highlight for 3D "shine" */
+        inset 0 8px 15px rgba(255, 255, 255, 0.4), 
+        /* Bottom inner shadow for curve */
+        inset 0 -8px 15px rgba(0, 0, 0, 0.3);
+      
+      /* Tilt effect */
+      transform: rotateX(5deg);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transition: transform 0.3s ease;
+    }
+
+    .time-box:active {
+      transform: scale(0.95) rotateX(0deg);
     }
 
     .number {
       font-size: 3.2rem;
-      font-weight: 700;
+      font-weight: 800;
       line-height: 1;
+      margin-bottom: 2px;
+      text-shadow: 2px 4px 6px rgba(0,0,0,0.2);
     }
 
     .label {
-      font-size: 0.85rem;
-      margin-top: 8px;
+      font-size: 0.75rem;
       font-weight: 600;
-      letter-spacing: 1px;
+      letter-spacing: 1.5px;
       text-transform: uppercase;
+      opacity: 0.95;
     }
 
-    /* Extra scaling for smaller iPhones */
     @media (max-width: 380px) {
-      h1 { font-size: 2rem; }
+      h1 { font-size: 1.9rem; }
       .number { font-size: 2.8rem; }
       .timer { gap: 15px; }
     }
@@ -90,19 +102,19 @@
     <h1>Agribank<br>Online Beta<br>Expires</h1>
     <div class="timer">
       <div class="time-box">
-        <div id="days" class="number">0</div>
+        <div id="days" class="number">8</div>
         <div class="label">Days</div>
       </div>
       <div class="time-box">
-        <div id="hours" class="number">0</div>
+        <div id="hours" class="number">18</div>
         <div class="label">Hours</div>
       </div>
       <div class="time-box">
-        <div id="minutes" class="number">0</div>
+        <div id="minutes" class="number">46</div>
         <div class="label">Minutes</div>
       </div>
       <div class="time-box">
-        <div id="seconds" class="number">0</div>
+        <div id="seconds" class="number">58</div>
         <div class="label">Seconds</div>
       </div>
     </div>
@@ -110,28 +122,23 @@
 
   <script>
     const launchDate = new Date("February 20, 2026 12:00:00").getTime();
-
-    const countdown = setInterval(() => {
+    const updateCountdown = () => {
       const now = new Date().getTime();
       const distance = launchDate - now;
 
-      const d = Math.floor(distance / (1000 * 60 * 60 * 24));
-      const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      const s = Math.floor((distance % (1000 * 60)) / 1000);
-
-      document.getElementById("days").innerText = d;
-      document.getElementById("hours").innerText = h;
-      document.getElementById("minutes").innerText = m;
-      document.getElementById("seconds").innerText = s;
-
       if (distance < 0) {
-        clearInterval(countdown);
         document.querySelector(".countdown-container").innerHTML = "<h1>🎉 Beta Expired</h1>";
+        return;
       }
-    }, 1000);
+
+      document.getElementById("days").innerText = Math.floor(distance / (1000 * 60 * 60 * 24));
+      document.getElementById("hours").innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      document.getElementById("minutes").innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      document.getElementById("seconds").innerText = Math.floor((distance % (1000 * 60)) / 1000);
+    };
+
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
   </script>
 </body>
 </html>
-
-
